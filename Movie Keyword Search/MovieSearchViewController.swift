@@ -8,13 +8,15 @@
 
 import UIKit
 
-class MovieSearchViewController: UIViewController, UITextFieldDelegate {
+class MovieSearchViewController: UIViewController, UITextFieldDelegate, MovieSelectionDelegate {
 
 	//MARK: - Class Properties
 	static let movieCollectionViewControllerSegue = "MovieCollectionViewSegue"
+	static let movieDetailViewControllerShowSegue = "movieDetailViewControllerShowSegue"
 	
 	//MARK: - Private Properties
-	let movieDBRequest = MovieDBRequest.shared
+	private let movieDBRequest = MovieDBRequest.shared
+	private var selectedMovie: Movie?
 	
 	//MARK: - Public Properties
 	@IBOutlet var searchField: UITextField!
@@ -24,9 +26,19 @@ class MovieSearchViewController: UIViewController, UITextFieldDelegate {
 	//MARK: Overridden Methods
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if let segueIdentifier = segue.identifier {
-			if segueIdentifier == MovieSearchViewController.movieCollectionViewControllerSegue {
-				// If this is not a MovieCollectionViewController we have a serious problem...
+			switch segueIdentifier {
+			case MovieSearchViewController.movieCollectionViewControllerSegue:
 				movieCollectionViewController = segue.destination as! MovieCollectionViewController
+				movieCollectionViewController.delegate = self
+				
+			case MovieSearchViewController.movieDetailViewControllerShowSegue:
+				let movieDetailViewController = segue.destination as! MovieDetailViewController
+				if let movie = selectedMovie {
+					movieDetailViewController.movie = movie
+				}
+				
+			default:
+				break
 			}
 		}
 	}
@@ -51,5 +63,13 @@ extension MovieSearchViewController {
 			}
 		}
 		return true
+	}
+}
+
+//MARK: - MovieSelectionDelegate
+extension MovieSearchViewController {
+	func collectionViewController(_ collectionViewController: MovieCollectionViewController, didSelect movie: Movie) {
+		selectedMovie = movie
+		performSegue(withIdentifier: MovieSearchViewController.movieDetailViewControllerShowSegue, sender: self)
 	}
 }

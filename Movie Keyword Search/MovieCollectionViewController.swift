@@ -8,23 +8,34 @@
 
 import UIKit
 
+protocol MovieSelectionDelegate: class {
+	func collectionViewController(_ collectionViewController: MovieCollectionViewController, didSelect movie: Movie)
+}
+
+//MARK: -
 class MovieCollectionViewCell: UICollectionViewCell {
+	
+	//MARK: - Class Properties
 	static let reuseIdentifier = "MovieCollectionViewCell"
 	
+	//MARK: - Public Properties
 	@IBOutlet var posterImageView: UIImageView!
 	@IBOutlet var titleLabel: UILabel!
 	@IBOutlet var overviewLabel: UILabel!
 	var imageLoadingOperation: BlockOperation?
 	
+	//MARK: - Private Properties
+	private let placeholderImage = UIImage(named: "movie-placeholder")
+	
 	//MARK: - Overridden
 	override func prepareForReuse() {
 		super.prepareForReuse()
-		imageLoadingOperation = nil
-		posterImageView.image = nil
+		posterImageView.image = placeholderImage
 	}
 	
 }
 
+//MARK: -
 class MovieCollectionViewController: UICollectionViewController {
 
 	//MARK: - Public Properties
@@ -35,6 +46,8 @@ class MovieCollectionViewController: UICollectionViewController {
 		}
 	}
 	
+	weak var delegate: MovieSelectionDelegate?
+	
 	//MARK: - Private Properties
 	private let imageLoadingQueue = OperationQueue()
 }
@@ -44,8 +57,7 @@ extension MovieCollectionViewController {
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-
-
+	
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return movies.count
     }
@@ -71,4 +83,13 @@ extension MovieCollectionViewController {
     
         return cell
     }
+}
+
+//MARK: - UICollectionViewDelegate
+extension MovieCollectionViewController {
+	override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+		let movie = movies[indexPath.row]
+		delegate?.collectionViewController(self, didSelect: movie)
+		
+	}
 }

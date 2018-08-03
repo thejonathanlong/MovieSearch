@@ -11,21 +11,22 @@ import UIKit
 class MovieSearchViewController: UIViewController, UITextFieldDelegate {
 
 	//MARK: - Class Properties
-	static let movieTableViewControllerSegue = "MovieTableViewControllerEmbeddedSegue"
+	static let movieCollectionViewControllerSegue = "MovieCollectionViewSegue"
 	
 	//MARK: - Private Properties
-	let movieDBRequest = MovieDBRequest()
+	let movieDBRequest = MovieDBRequest.shared
 	
 	//MARK: - Public Properties
 	@IBOutlet var searchField: UITextField!
-	var movieTableViewController = MovieTableViewController()
+	@IBOutlet var loadingIndicatorView: UIActivityIndicatorView!
+	var movieCollectionViewController = MovieCollectionViewController()
 	
 	//MARK: Overridden Methods
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if let segueIdentifier = segue.identifier {
-			if segueIdentifier == MovieSearchViewController.movieTableViewControllerSegue {
-				// If this is not a UITableViewController we have a serious problem...
-				movieTableViewController = segue.destination as! MovieTableViewController
+			if segueIdentifier == MovieSearchViewController.movieCollectionViewControllerSegue {
+				// If this is not a MovieCollectionViewController we have a serious problem...
+				movieCollectionViewController = segue.destination as! MovieCollectionViewController
 			}
 		}
 	}
@@ -36,11 +37,16 @@ extension MovieSearchViewController {
 	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
 		textField.resignFirstResponder()
 		if let searchText = textField.text {
+			loadingIndicatorView.isHidden = false
+			loadingIndicatorView.startAnimating()
 			movieDBRequest.search(query: searchText) { [weak self] (movieResults) in
-				guard let strongSelf = self else { return }
-				
-				if let movies = movieResults.results {
-					strongSelf.movieTableViewController.movies = movies
+				DispatchQueue.main.async {
+					guard let strongSelf = self else { return }
+					if let movies = movieResults.results {
+						strongSelf.movieCollectionViewController.movies = movies
+					}
+					strongSelf.loadingIndicatorView.stopAnimating()
+					strongSelf.loadingIndicatorView.isHidden = true
 				}
 			}
 		}

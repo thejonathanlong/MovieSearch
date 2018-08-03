@@ -23,20 +23,24 @@ class MovieTableViewCell: UITableViewCell {
 			return posterImageView.image
 		}
 	}
+	weak var imageLoadingOperation: BlockOperation?
 	
 	//MARK: - Private Properties
 	var posterImageViewWidthConstraint = NSLayoutConstraint()
 	var posterImageViewHeightConstraint = NSLayoutConstraint()
 	
 	//MARK: - Overridden Methods
-	override func updateConstraints() {
-		if let image = posterImage {
-			posterImageViewWidthConstraint = posterImageView.widthAnchor.constraint(equalToConstant: image.size.width)
-			posterImageViewHeightConstraint = posterImageView.heightAnchor.constraint(equalToConstant: image.size.height)
-			posterImageViewHeightConstraint.isActive = true
-			posterImageViewWidthConstraint.isActive = true
-		}
-		super.updateConstraints()
+//	override func updateConstraints() {
+//		if let image = posterImage {
+//			posterImageViewWidthConstraint = posterImageView.widthAnchor.constraint(equalToConstant: image.size.width)
+//			posterImageViewWidthConstraint.isActive = true
+//		}
+//		super.updateConstraints()
+//	}
+	
+	override func prepareForReuse() {
+		imageLoadingOperation = nil
+		super.prepareForReuse()
 	}
 }
 
@@ -52,6 +56,8 @@ class MovieTableViewController: UITableViewController {
 			}
 		}
 	}
+	
+	let imageLoadingQueue = OperationQueue()
 }
 
 // MARK: - UITableViewDataSource
@@ -70,8 +76,18 @@ extension MovieTableViewController {
 		let movie = movies[indexPath.row]
 		cell.titleLabel.text = movie.title
 		cell.overviewLabel.text = movie.overview
-		
-		
+		if let currentImageLoadingOperation = cell.imageLoadingOperation {
+			currentImageLoadingOperation.cancel()
+		}
+		let imageLoadingOperation = BlockOperation {
+			let posterImage = MovieDBRequest.shared.movieImage(movie: movie)
+			DispatchQueue.main.async {
+				cell.posterImage = posterImage
+			}
+		}
+		cell.imageLoadingOperation = imageLoadingOperation
+		imageLoadingQueue.addOperation(imageLoadingOperation)
+
 		return cell
 	}
 

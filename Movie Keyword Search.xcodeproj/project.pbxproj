@@ -17,6 +17,7 @@
 		0B76E7582112B742003BD4F3 /* MovieDBRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B76E7572112B742003BD4F3 /* MovieDBRequest.swift */; };
 		0B76E75A2112BD4C003BD4F3 /* MovieSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B76E7592112BD4C003BD4F3 /* MovieSearchViewController.swift */; };
 		0B76E75C2112C029003BD4F3 /* MovieTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B76E75B2112C029003BD4F3 /* MovieTableViewController.swift */; };
+		0BF9D4522113C7610080FBC1 /* MovieCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF9D4512113C7610080FBC1 /* MovieCollectionViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		0B76E7572112B742003BD4F3 /* MovieDBRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDBRequest.swift; sourceTree = "<group>"; };
 		0B76E7592112BD4C003BD4F3 /* MovieSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieSearchViewController.swift; sourceTree = "<group>"; };
 		0B76E75B2112C029003BD4F3 /* MovieTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTableViewController.swift; sourceTree = "<group>"; };
+		0BF9D4512113C7610080FBC1 /* MovieCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCollectionViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +110,7 @@
 				0B76E7572112B742003BD4F3 /* MovieDBRequest.swift */,
 				0B76E7592112BD4C003BD4F3 /* MovieSearchViewController.swift */,
 				0B76E75B2112C029003BD4F3 /* MovieTableViewController.swift */,
+				0BF9D4512113C7610080FBC1 /* MovieCollectionViewController.swift */,
 				0B76E72B211272AD003BD4F3 /* Main.storyboard */,
 				0B76E72E211272AD003BD4F3 /* Assets.xcassets */,
 				0B76E730211272AD003BD4F3 /* LaunchScreen.storyboard */,
@@ -270,6 +273,7 @@
 				0B76E7582112B742003BD4F3 /* MovieDBRequest.swift in Sources */,
 				0B76E75A2112BD4C003BD4F3 /* MovieSearchViewController.swift in Sources */,
 				0B76E728211272AD003BD4F3 /* AppDelegate.swift in Sources */,
+				0BF9D4522113C7610080FBC1 /* MovieCollectionViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
